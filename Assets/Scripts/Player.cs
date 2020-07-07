@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _speed = 10.0f;
+    [SerializeField] private float _speed = 8.0f;
+    [SerializeField] private float _strongerSpeed = 10.0f;
     [SerializeField] private float _boostedSpeed = 15.0f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private int _playerLives = 3;
@@ -16,6 +17,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject[] _playerDamageSprites;
     [SerializeField] private GameObject _playerExplosionSprite;
     [SerializeField] private AudioClip _laserAudio;
+    [SerializeField] private GameObject[] _thrusters;
+
     private bool _isTrippleShotActive;
     private bool _isSpeedBoostActive;
     private bool _isShieldActive;
@@ -25,6 +28,10 @@ public class Player : MonoBehaviour
     void Start()
     {
         _cameraPosition = new Vector3(0, 1, -10);
+
+        _thrusters[0].SetActive(true);
+        _thrusters[1].SetActive(false);
+        _thrusters[2].SetActive(false);
         _shieldSprite.SetActive(false);
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -57,7 +64,18 @@ public class Player : MonoBehaviour
         }
         else
         {
-            transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _speed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                _thrusters[0].SetActive(false);
+                _thrusters[1].SetActive(true);
+                transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _strongerSpeed * Time.deltaTime);
+            }
+            else
+            {
+                _thrusters[0].SetActive(true);
+                _thrusters[1].SetActive(false);
+                transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _speed * Time.deltaTime);
+            }
         }
 
         if (transform.position.y > 0)
@@ -135,6 +153,9 @@ public class Player : MonoBehaviour
     public void SpeeedUpActive()
     {
         _isSpeedBoostActive = true;
+        _thrusters[0].SetActive(false);
+        _thrusters[1].SetActive(false);
+        _thrusters[2].SetActive(true);
         StartCoroutine(SpeedBoostPowerDownRoutine());
     }
     public void ShieldActive()
@@ -151,6 +172,7 @@ public class Player : MonoBehaviour
     IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
+        _thrusters[2].SetActive(false);
         _isSpeedBoostActive = false;
     }
     public void AddingScore(int scoreToAdd)
