@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _laser;
     [SerializeField] private GameObject _trippleShot;
     [SerializeField] private GameObject _shieldSprite;
+    private int _shieldHealth = 3;
     [SerializeField] private GameObject[] _playerDamageSprites;
     [SerializeField] private GameObject _playerExplosionSprite;
     [SerializeField] private AudioClip _laserAudio;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     private int _score;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+    Renderer _shieldSpriteRender;
     void Start()
     {
         _cameraPosition = new Vector3(0, 1, -10);
@@ -33,9 +35,11 @@ public class Player : MonoBehaviour
         _thrusters[1].SetActive(false);
         _thrusters[2].SetActive(false);
         _shieldSprite.SetActive(false);
+
         transform.position = Vector3.zero;
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        _shieldSpriteRender = _shieldSprite.GetComponent<Renderer>();
 
         if (_spawnManager == null)
         {
@@ -44,6 +48,10 @@ public class Player : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("UIManager is NULL");
+        }
+        if (_shieldSpriteRender == null)
+        {
+            Debug.LogError("Shield Sprite Renderer is NULL");
         }
     }
 
@@ -120,8 +128,21 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
-            _isShieldActive = false;
-            _shieldSprite.SetActive(false);
+            _shieldHealth--;
+
+            switch(_shieldHealth)
+            {
+                case 2:
+                    _shieldSpriteRender.material.color = Color.green;
+                    break;
+                case 1:
+                    _shieldSpriteRender.material.color = Color.red;
+                    break;
+                case 0:
+                    _isShieldActive = false;
+                    _shieldSprite.SetActive(false);
+                    break;
+            }
         }
         else
         {
@@ -161,6 +182,8 @@ public class Player : MonoBehaviour
     public void ShieldActive()
     {
         _isShieldActive = true;
+        _shieldHealth = 3;
+        _shieldSpriteRender.material.color = Color.white;
         _shieldSprite.SetActive(true);
     }
 
