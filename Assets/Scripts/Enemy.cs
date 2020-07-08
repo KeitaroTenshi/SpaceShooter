@@ -10,11 +10,13 @@ public class Enemy : MonoBehaviour
     BoxCollider2D enemyCollider;
     [SerializeField] private AudioClip _enemyExplosionSound;
     [SerializeField] private GameObject _enemyLaserPrefab;
+    private bool _isEnemyDead;
     private float _nextFire = -1.0f;
     Vector3 _cameraPosition;
 
     private void Start()
     {
+        _isEnemyDead = false;
         _cameraPosition = new Vector3(0, 1, -10);
         player = GameObject.Find("Player").GetComponent<Player>();
         animator = gameObject.GetComponent<Animator>();
@@ -50,6 +52,7 @@ public class Enemy : MonoBehaviour
                 animator.SetTrigger("OnEnemyDeath");
                 AudioSource.PlayClipAtPoint(_enemyExplosionSound, _cameraPosition);
                 enemyCollider.enabled = false;
+                _isEnemyDead = true;
                 Destroy(this.gameObject, 2f);
             }
         }
@@ -65,6 +68,7 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("OnEnemyDeath");
             AudioSource.PlayClipAtPoint(_enemyExplosionSound, _cameraPosition);
             enemyCollider.enabled = false;
+            _isEnemyDead = true;
             Destroy(this.gameObject, 1f);
         }
     }
@@ -80,7 +84,7 @@ public class Enemy : MonoBehaviour
     }
     void ShootingCalculation(float _fireRate)
     {
-        if (Time.time > _nextFire)
+        if (Time.time > _nextFire && _isEnemyDead == false)
         {
             _nextFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);

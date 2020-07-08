@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _boostedSpeed = 15.0f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private int _playerLives = 3;
+    [SerializeField] private int _ammoCount = 15;
     private float _nextFire = -1f;
     private Vector3 _cameraPosition;
     [SerializeField] private GameObject _laser;
@@ -107,7 +108,7 @@ public class Player : MonoBehaviour
 
     void ShootingLasers()
     {
-            if (Input.GetKeyDown(KeyCode.Space) && _nextFire < Time.time)
+            if (Input.GetKeyDown(KeyCode.Space) && _nextFire < Time.time && _ammoCount > 0)
             {
             _nextFire = Time.time + _fireRate;
             AudioSource.PlayClipAtPoint(_laserAudio, _cameraPosition);
@@ -116,6 +117,7 @@ public class Player : MonoBehaviour
             {
                 Vector3 laserPos = new Vector3(transform.position.x, transform.position.y + 1.3f, transform.position.z);
                 Instantiate(_laser, laserPos, Quaternion.identity);
+                AmmoUsage();
             }
             else if (_isTrippleShotActive)
             {
@@ -202,5 +204,10 @@ public class Player : MonoBehaviour
     {
         _score += scoreToAdd;
         _uiManager.ScoreUpdate(_score);
+    }
+    public void AmmoUsage()
+    {
+        _ammoCount -= 1;
+        _uiManager.AmmoCountUpdate(_ammoCount);
     }
 }

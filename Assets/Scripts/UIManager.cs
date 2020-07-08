@@ -10,24 +10,36 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _livesImage;
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartGameText;
-    private GameManager gameManager;
+    [SerializeField] private Text _ammoCountText;
+    private GameManager _gameManager;
+    private Player _player;
 
     private void Start()
     {
         _gameOverText.gameObject.SetActive(false);
         _restartGameText.gameObject.SetActive(false);
         _scoreText.text = "Score: " + 0;
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
 
-        if (gameManager == null)
+        if (_gameManager == null)
         {
-            Debug.LogError("GameManager is Null. UIManager script");
+            Debug.LogError("GameManager is NULL");
+        }
+        if (_player == null)
+        {
+            Debug.LogError("Player is NULL");
         }
     }
     public void ScoreUpdate(int playerScore)
     {
         _scoreText.text = "Score: " + playerScore;
     }
+    public void AmmoCountUpdate(int ammoLeft)
+    {
+        _ammoCountText.text = "Ammo: " + ammoLeft;
+    }
+
     public void LivesUpdate(int currentLives)
     {
         _livesImage.sprite = _liveSprites[currentLives];
@@ -35,7 +47,7 @@ public class UIManager : MonoBehaviour
         if (currentLives <= 0)
         {
             GameOverSequence();
-            gameManager.GameOver();
+            _gameManager.GameOver();
         }
     }
     
