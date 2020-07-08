@@ -550,6 +550,7 @@ MonoBehaviour:
   - {fileID: 4045534011957261983, guid: 1b07e7037791eb042b3e80dbd62764fb, type: 3}
   - {fileID: 2315356697169145473, guid: b17c733b3ad05ab4087eb3ad157ea639, type: 3}
   - {fileID: 6886341846479864828, guid: 8d341dc72d5f4b349aa9f1d7a11f283c, type: 3}
+  - {fileID: 6969291845191537481, guid: d6471f0ebe480454f9c309018ef5767f, type: 3}
 --- !u!212 &320948193
 SpriteRenderer:
   m_ObjectHideFlags: 0

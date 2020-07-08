@@ -189,6 +189,12 @@ public class Player : MonoBehaviour
         _shieldSprite.SetActive(true);
     }
 
+    public void AmmoRefillActive()
+    {
+        _ammoCount = 15;
+        _uiManager.AmmoCountUpdate(_ammoCount);
+    }
+
     IEnumerator TrippleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
