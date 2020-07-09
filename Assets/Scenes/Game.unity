@@ -551,6 +551,7 @@ MonoBehaviour:
   - {fileID: 2315356697169145473, guid: b17c733b3ad05ab4087eb3ad157ea639, type: 3}
   - {fileID: 6886341846479864828, guid: 8d341dc72d5f4b349aa9f1d7a11f283c, type: 3}
   - {fileID: 6969291845191537481, guid: d6471f0ebe480454f9c309018ef5767f, type: 3}
+  - {fileID: 779829624371856095, guid: 51e793393c5a1f74e93335187e0fdee9, type: 3}
 --- !u!212 &320948193
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -824,7 +825,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354104216}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2.69, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 100890203}

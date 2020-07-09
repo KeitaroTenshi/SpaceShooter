@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
             switch(_shieldHealth)
             {
                 case 2:
-                    _shieldSpriteRender.material.color = Color.green;
+                    _shieldSpriteRender.material.color = Color.yellow;
                     break;
                 case 1:
                     _shieldSpriteRender.material.color = Color.red;
@@ -150,6 +150,7 @@ public class Player : MonoBehaviour
         {
         _playerLives--;
         _uiManager.LivesUpdate(_playerLives);
+
         if (_playerLives == 2)
             {
                 _playerDamageSprites[0].SetActive(true);
@@ -215,5 +216,28 @@ public class Player : MonoBehaviour
     {
         _ammoCount -= 1;
         _uiManager.AmmoCountUpdate(_ammoCount);
+    }
+    public void PlayerHealing()
+    {
+        if (_playerLives < 3)
+        {
+            _playerLives++;
+            _uiManager.LivesUpdate(_playerLives);
+
+            switch(_playerLives)
+            {
+                case 3:
+                    _playerDamageSprites[0].SetActive(false);
+                    _playerDamageSprites[1].SetActive(false);
+                    break;
+                case 2:
+                    _playerDamageSprites[0].SetActive(true);
+                    _playerDamageSprites[1].SetActive(false);
+                    break;
+                case 1:
+                    _playerDamageSprites[1].SetActive(true);
+                    break;
+            }
+        }
     }
 }
