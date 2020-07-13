@@ -5,11 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 8.0f;
-    [SerializeField] private float _strongerSpeed = 10.0f;
+    [SerializeField] private float _dodgeSpeed = 10.0f;
     [SerializeField] private float _boostedSpeed = 15.0f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private int _playerLives = 3;
     [SerializeField] private int _ammoCount = 15;
+    [SerializeField] private float _dodgeRate = 2f;
+    private float _nextDodge = -1f;
     private float _nextFire = -1f;
     private Vector3 _cameraPosition;
     [SerializeField] private GameObject _laser;
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     Renderer _shieldSpriteRender;
+    private Animator _dodgeChargerAnimator;
     void Start()
     {
         _cameraPosition = new Vector3(0, 1, -10);
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         _shieldSpriteRender = _shieldSprite.GetComponent<Renderer>();
+        _dodgeChargerAnimator = GameObject.Find("DodgeCharger").GetComponent<Animator>();
 
         if (_spawnManager == null)
         {
@@ -53,6 +57,10 @@ public class Player : MonoBehaviour
         if (_shieldSpriteRender == null)
         {
             Debug.LogError("Shield Sprite Renderer is NULL");
+        }
+        if (_dodgeChargerAnimator == null)
+        {
+            Debug.LogError("Dodge Charger Animator is NULL");
         }
     }
 
@@ -73,14 +81,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && Time.time > _nextDodge)
             {
-                _thrusters[0].SetActive(false);
-                _thrusters[1].SetActive(true);
-                transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _strongerSpeed * Time.deltaTime);
+                transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _dodgeSpeed * Time.deltaTime);
+                StartCoroutine(PlayerDodgePowerDownRoutine());
             }
             else
             {
+                _dodgeChargerAnimator.SetBool("OnUsedDodge", false);
                 _thrusters[0].SetActive(true);
                 _thrusters[1].SetActive(false);
                 transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _speed * Time.deltaTime);
@@ -239,5 +247,14 @@ public class Player : MonoBehaviour
                     break;
             }
         }
+    }
+
+    IEnumerator PlayerDodgePowerDownRoutine()
+    {
+            _thrusters[0].SetActive(false);
+            _thrusters[1].SetActive(true);
+            yield return new WaitForSeconds(1.0f);
+            _dodgeChargerAnimator.SetBool("OnUsedDodge", true);
+            _nextDodge = Time.time + _dodgeRate;
     }
 }
