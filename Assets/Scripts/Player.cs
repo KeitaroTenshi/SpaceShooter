@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _playerExplosionSprite;
     [SerializeField] private AudioClip _laserAudio;
     [SerializeField] private GameObject[] _thrusters;
-
     private bool _isTrippleShotActive;
     private bool _isSpeedBoostActive;
     private bool _isShieldActive;
@@ -31,6 +30,7 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     Renderer _shieldSpriteRender;
     private Animator _dodgeChargerAnimator;
+    private CameraBehavior _cameraBehavior;
     void Start()
     {
         _cameraPosition = new Vector3(0, 1, -10);
@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         _shieldSpriteRender = _shieldSprite.GetComponent<Renderer>();
         _dodgeChargerAnimator = GameObject.Find("DodgeCharger").GetComponent<Animator>();
+        _cameraBehavior = GameObject.Find("Main Camera").GetComponent<CameraBehavior>();
 
         if (_spawnManager == null)
         {
@@ -61,6 +62,10 @@ public class Player : MonoBehaviour
         if (_dodgeChargerAnimator == null)
         {
             Debug.LogError("Dodge Charger Animator is NULL");
+        }
+        if (_cameraBehavior == null)
+        {
+            Debug.LogError("CameraBehaviour is NULL");
         }
     }
 
@@ -154,9 +159,11 @@ public class Player : MonoBehaviour
                     break;
             }
         }
+
         else
         {
         _playerLives--;
+        StartCoroutine(_cameraBehavior.CameraShake(0.15f, 0.5f));
         _uiManager.LivesUpdate(_playerLives);
 
         if (_playerLives == 2)
