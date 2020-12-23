@@ -11,7 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _gameOverText;
     [SerializeField] private Text _restartGameText;
     [SerializeField] private Text _ammoCountText;
+<<<<<<< HEAD
     [SerializeField] private Text _fuelRechargeText;
+=======
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     private GameManager _gameManager;
     private Player _player;
 
@@ -36,6 +39,7 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = "Score: " + playerScore;
     }
+<<<<<<< HEAD
     public void AmmoCountUpdate(int ammoLeft, int maxAmmo)
     {
         _ammoCountText.text = "Ammo: " + ammoLeft + " / " + maxAmmo;
@@ -43,6 +47,11 @@ public class UIManager : MonoBehaviour
     public void FuelUpdate(string canDodge)
     {
         _fuelRechargeText.text = "Dodge: " + canDodge;
+=======
+    public void AmmoCountUpdate(int ammoLeft)
+    {
+        _ammoCountText.text = "Ammo: " + ammoLeft;
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     }
 
     public void LivesUpdate(int currentLives)

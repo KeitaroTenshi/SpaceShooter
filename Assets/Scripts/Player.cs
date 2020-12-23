@@ -6,13 +6,19 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _speed = 8.0f;
     [SerializeField] private float _dodgeSpeed = 10.0f;
+<<<<<<< HEAD
     [SerializeField] private float _dodgeDuration = 1.0f;
+=======
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     [SerializeField] private float _boostedSpeed = 15.0f;
     [SerializeField] private float _fireRate = 0.15f;
     [SerializeField] private int _playerLives = 3;
     [SerializeField] private int _ammoCount = 15;
     [SerializeField] private float _dodgeRate = 2f;
+<<<<<<< HEAD
     [SerializeField] private int _maxAmmo = 15;
+=======
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     private float _nextDodge = -1f;
     private float _nextFire = -1f;
     private Vector3 _cameraPosition;
@@ -30,8 +36,14 @@ public class Player : MonoBehaviour
     private int _score;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+<<<<<<< HEAD
     private CameraBehaviour _cameraBehaviour;
     Renderer _shieldSpriteRender;
+=======
+    Renderer _shieldSpriteRender;
+    private Animator _dodgeChargerAnimator;
+    private CameraBehavior _cameraBehavior;
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     void Start()
     {
         _cameraPosition = new Vector3(0, 1, -10);
@@ -45,7 +57,12 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         _shieldSpriteRender = _shieldSprite.GetComponent<Renderer>();
+<<<<<<< HEAD
         _cameraBehaviour = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<CameraBehaviour>();
+=======
+        _dodgeChargerAnimator = GameObject.Find("DodgeCharger").GetComponent<Animator>();
+        _cameraBehavior = GameObject.Find("Main Camera").GetComponent<CameraBehavior>();
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
 
         if (_spawnManager == null)
         {
@@ -59,9 +76,19 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Shield Sprite Renderer is NULL");
         }
+<<<<<<< HEAD
         if (_cameraBehaviour == null)
         {
             Debug.LogError("_cameraBehaviour is NULL");
+=======
+        if (_dodgeChargerAnimator == null)
+        {
+            Debug.LogError("Dodge Charger Animator is NULL");
+        }
+        if (_cameraBehavior == null)
+        {
+            Debug.LogError("CameraBehaviour is NULL");
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
         }
     }
 
@@ -76,11 +103,14 @@ public class Player : MonoBehaviour
        float _horizontalInput = Input.GetAxis("Horizontal");
        float _verticalInput = Input.GetAxis("Vertical");
 
+<<<<<<< HEAD
         if (Time.time > _nextDodge)
         {
             _uiManager.FuelUpdate("Ready");
         }
 
+=======
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
         if (_isSpeedBoostActive == true)
         {
             transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _boostedSpeed * Time.deltaTime);
@@ -89,12 +119,19 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftShift) && Time.time > _nextDodge)
             {
+<<<<<<< HEAD
                 _uiManager.FuelUpdate("In use");
+=======
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
                 transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _dodgeSpeed * Time.deltaTime);
                 StartCoroutine(PlayerDodgePowerDownRoutine());
             }
             else
             {
+<<<<<<< HEAD
+=======
+                _dodgeChargerAnimator.SetBool("OnUsedDodge", false);
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
                 _thrusters[0].SetActive(true);
                 _thrusters[1].SetActive(false);
                 transform.Translate(new Vector3(_horizontalInput, _verticalInput, 0) * _speed * Time.deltaTime);
@@ -163,8 +200,13 @@ public class Player : MonoBehaviour
 
         else
         {
+<<<<<<< HEAD
         _cameraBehaviour.CameraShake();
         _playerLives--;
+=======
+        _playerLives--;
+        StartCoroutine(_cameraBehavior.CameraShake(0.15f, 0.5f));
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
         _uiManager.LivesUpdate(_playerLives);
 
         if (_playerLives == 2)
@@ -208,8 +250,13 @@ public class Player : MonoBehaviour
 
     public void AmmoRefillActive()
     {
+<<<<<<< HEAD
         _ammoCount = _maxAmmo;
         _uiManager.AmmoCountUpdate(_ammoCount, _maxAmmo);
+=======
+        _ammoCount = 15;
+        _uiManager.AmmoCountUpdate(_ammoCount);
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     }
 
     IEnumerator TrippleShotPowerDownRoutine()
@@ -231,7 +278,11 @@ public class Player : MonoBehaviour
     public void AmmoUsage()
     {
         _ammoCount -= 1;
+<<<<<<< HEAD
         _uiManager.AmmoCountUpdate(_ammoCount, _maxAmmo);
+=======
+        _uiManager.AmmoCountUpdate(_ammoCount);
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     }
     public void PlayerHealing()
     {
@@ -259,9 +310,17 @@ public class Player : MonoBehaviour
 
     IEnumerator PlayerDodgePowerDownRoutine()
     {
+<<<<<<< HEAD
         _thrusters[0].SetActive(false);
         _thrusters[1].SetActive(true);
         yield return new WaitForSeconds(_dodgeDuration);
         _nextDodge = Time.time + _dodgeRate;
+=======
+            _thrusters[0].SetActive(false);
+            _thrusters[1].SetActive(true);
+            yield return new WaitForSeconds(1.0f);
+            _dodgeChargerAnimator.SetBool("OnUsedDodge", true);
+            _nextDodge = Time.time + _dodgeRate;
+>>>>>>> 3adce3f2ae2a168a47651be80b65cf27acf91729
     }
 }
